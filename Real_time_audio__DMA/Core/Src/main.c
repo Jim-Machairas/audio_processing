@@ -540,7 +540,7 @@ int16_t codec_initialization(void)
       return ret;
     }
 
-    ret = codec_drv->codec_set_tdm_slots(CODEC_DEV0, DEFAULT_DAI_SLOT_WIDTH, DEFAULT_BIT_PER_CHANL, DEFAULT_DAI_SLOTS, NULL);
+    ret = codec_drv->codec_set_tdm_frmt(CODEC_DEV0, DEFAULT_DAI_SLOT_WIDTH, DEFAULT_BIT_PER_CHANL, DEFAULT_DAI_SLOTS, NULL);
     if (ret)
     {
       return ret;

@@ -19,7 +19,7 @@ typedef struct
     int (*set_codec_frame_len) (codec_dev_id dev, uint16_t len);
     int (*codec_pll_init) (codec_dev_id dev, bool master_mode, uint32_t in_rate, uint32_t out_rate, void * p_hw_cfg);
     int (*codec_set_sample_rate) (codec_dev_id dev, uint32_t rate, void * p_hw_cfg);
-    int (*codec_set_tdm_slots) (codec_dev_id dev, uint16_t frame_len, uint8_t slot_width, uint8_t slot_cnt, void * p_hw_cfg);
+    int (*codec_set_tdm_frmt) (codec_dev_id dev, uint16_t frame_len, uint8_t slot_width, uint8_t slot_cnt, void * p_hw_cfg);
 } CodecInterface_t;
 
 extern const CodecInterface_t codec_driver;
@@ -33,6 +33,6 @@ int codec_drv_pll_init(codec_dev_id dev, bool master_mode, uint32_t in_rate, uin
 
 int codec_drv_set_sample_rate(codec_dev_id dev, uint32_t rate, void * p_hw_cfg);
 
-int codec_drv_set_tdm_slots(codec_dev_id dev, uint16_t frame_len, uint8_t slot_width, uint8_t slot_cnt, void * p_hw_cfg);
+int codec_drv_set_tdm_frmt(codec_dev_id dev, uint16_t frame_len, uint8_t slot_width, uint8_t slot_cnt, void * p_hw_cfg);
 
 #endif /* __CODEC_HAL_H */

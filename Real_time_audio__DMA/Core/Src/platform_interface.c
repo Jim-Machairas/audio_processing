@@ -1,11 +1,14 @@
 
 #include <platform_interface.h>
-//TODO: remove including of app files in platform specific file.
 #include "main.h"
+
+/* In the following APIs, the blocking version of STM32's i2C driver was used
+ * for transmit/receive. Interrupt or DMA versions can be used as well depending on application. */
+
 
 uint8_t plat_i2c_reg_read(const codec_dev_id dev, uint16_t reg, uint8_t *val)
 {
-	uint8_t I2C_Data[2];
+	uint8_t I2C_Data[REG_ADDR_LENGTH];
 	uint8_t result;
 
 	/* First transmit 16-bit reg address */
@@ -27,7 +30,7 @@ uint8_t plat_i2c_reg_read(const codec_dev_id dev, uint16_t reg, uint8_t *val)
 uint8_t plat_i2c_blockreg_read(const codec_dev_id dev, uint16_t reg, uint8_t *buf,
 			   uint16_t len)
 {
-    uint8_t I2C_Data[2];
+    uint8_t I2C_Data[REG_ADDR_LENGTH];
     uint8_t result;
 
 	for (uint16_t i = 0;i < len; i++)
@@ -55,7 +58,7 @@ uint8_t plat_i2c_blockreg_read(const codec_dev_id dev, uint16_t reg, uint8_t *bu
 uint8_t plat_i2c_reg_write(const codec_dev_id dev, uint16_t reg, uint8_t val)
 {
 
-    uint8_t I2C_Data[3];
+    uint8_t I2C_Data[REG_ADDR_LENGTH + REG_VAL_LENGTH];
 
     I2C_Data[0] = (uint8_t) ((reg>>8) & 0xFF);  // RegAddr High byte
     I2C_Data[1] = (uint8_t) ((reg & 0xFF));  // RegAddr Low byte
@@ -68,7 +71,7 @@ uint8_t plat_i2c_reg_write(const codec_dev_id dev, uint16_t reg, uint8_t val)
 uint8_t plat_i2c_blockreg_write(const codec_dev_id dev, uint16_t reg,
 			    const uint8_t *buf, uint16_t len)
 {
-    uint8_t I2C_Data[3];
+    uint8_t I2C_Data[REG_ADDR_LENGTH + REG_VAL_LENGTH];
     uint8_t data_buf[len];
     uint8_t result;
 
