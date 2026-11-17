@@ -48,8 +48,6 @@ I2C_HandleTypeDef hi2c1;
 
 I2S_HandleTypeDef hi2s1;
 I2S_HandleTypeDef hi2s2;
-DMA_HandleTypeDef hdma_spi1_rx;
-DMA_HandleTypeDef hdma_spi2_tx;
 
 /* USER CODE BEGIN PV */
 uint16_t adc_buff[BUF_LENGTH] = {0};
@@ -81,7 +79,6 @@ int16_t adcResult;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_DMA_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2S1_Init(void);
 static void MX_I2S2_Init(void);
@@ -127,15 +124,17 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
   MX_I2C1_Init();
   MX_I2S1_Init();
   MX_I2S2_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_I2S_Receive_DMA(&hi2s1, (uint16_t *)&adc_buff[0], BUF_LENGTH); // receive first packet from MIC-ADC,
-  HAL_I2S_Transmit_DMA(&hi2s2, (uint16_t *)&dac_buff[0], BUF_LENGTH); // transmit first packet to DAC-headphones,
+  /* Enable reception/transmission before codec initialization
+   * triggering MASTER clock output,to let PLL lock properly.
+   */
+  HAL_I2S_Receive_IT(&hi2s1, (uint16_t *)&adc_buff[0], BUF_LENGTH); // receive first packet from MIC-ADC,
+  HAL_I2S_Transmit_IT(&hi2s2, (uint16_t *)&dac_buff[0], BUF_LENGTH); // transmit first packet to DAC-headphones,
 
   int16_t ret = 0;
   ret = codec_initialization();
@@ -154,6 +153,18 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	/* Check that transmission and tx-complete-cbk are executed before re-triggering next transmission */
+	if((hi2s2.State == HAL_I2S_STATE_READY) && (ready_to_send == true))
+	{
+		HAL_I2S_Transmit_IT(&hi2s2, (uint16_t *)&dac_buff[0], BUF_LENGTH);
+	}
+
+	/* Check that reception and rx-complete-cbk are executed before re-triggering next reception */
+	if((hi2s1.State == HAL_I2S_STATE_READY) && (ready_to_receive == true))
+	{
+		HAL_I2S_Receive_IT(&hi2s1, (uint16_t *)&adc_buff[0], BUF_LENGTH);
+	}
+
 
   }
   /* USER CODE END 3 */
@@ -374,26 +385,6 @@ static void MX_I2S2_Init(void)
 
 }
 
-/** 
-  * Enable DMA controller clock
-  */
-static void MX_DMA_Init(void) 
-{
-
-  /* DMA controller clock enable */
-  __HAL_RCC_DMA1_CLK_ENABLE();
-  __HAL_RCC_DMA2_CLK_ENABLE();
-
-  /* DMA interrupt init */
-  /* DMA1_Stream4_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Stream4_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Stream4_IRQn);
-  /* DMA2_Stream0_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
-
-}
-
 /**
   * @brief GPIO Initialization Function
   * @param None
@@ -474,10 +465,9 @@ void HAL_I2S_TxCpltCallback(I2S_HandleTypeDef *hi2s)
 {
 
 }
-
 void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
 {
-	/* Process the first half of the buffer received through DMA. */
+	/* Process the first half of the buffer received through i2s interrupt. */
 	process_audio(0, BUF_LENGTH/4);
 
 	/* Pol for pot value */
@@ -489,7 +479,7 @@ void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
 
 void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
 {
-	/* Process the second half of the buffer received through DMA. */
+	/* Process the second half of the buffer received through i2s interrupt. */
 	process_audio(BUF_LENGTH/4, BUF_LENGTH/2);
 
 	/* Pol for pot value */

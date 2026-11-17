@@ -88,7 +88,8 @@ extern I2S_HandleTypeDef hi2s1;
 extern I2S_HandleTypeDef hi2s2;
 extern I2C_HandleTypeDef hi2c1;
 
-
+extern bool ready_to_send;
+extern bool ready_to_receive;
 
 /* USER CODE END Private defines */
 

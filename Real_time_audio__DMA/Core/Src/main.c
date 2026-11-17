@@ -134,6 +134,9 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 
+  /* Enable reception/transmission before codec initialization
+   * triggering MASTER clock output,to let PLL lock properly.
+   */
   HAL_I2S_Receive_DMA(&hi2s1, (uint16_t *)&adc_buff[0], BUF_LENGTH); // receive first packet from MIC-ADC,
   HAL_I2S_Transmit_DMA(&hi2s2, (uint16_t *)&dac_buff[0], BUF_LENGTH); // transmit first packet to DAC-headphones,
 
