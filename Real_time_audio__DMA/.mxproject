@@ -9,17 +9,17 @@ CDefines=USE_HAL_DRIVER;STM32F446xx;USE_HAL_DRIVER;USE_HAL_DRIVER;
 [PreviousGenFiles]
 AdvancedFolderStructure=true
 HeaderFileListSize=3
-HeaderFiles#0=C:/mitsos/schematics/STM32_projects/STM_CUBE_IDE_workstation/Real_time_audio__DMA/Core/Inc/stm32f4xx_it.h
-HeaderFiles#1=C:/mitsos/schematics/STM32_projects/STM_CUBE_IDE_workstation/Real_time_audio__DMA/Core/Inc/stm32f4xx_hal_conf.h
-HeaderFiles#2=C:/mitsos/schematics/STM32_projects/STM_CUBE_IDE_workstation/Real_time_audio__DMA/Core/Inc/main.h
+HeaderFiles#0=C:/mitsos/schematics/STM32_projects/GitHub_repos/public_repo/audio_processing/Real_time_audio__DMA/Core/Inc/stm32f4xx_it.h
+HeaderFiles#1=C:/mitsos/schematics/STM32_projects/GitHub_repos/public_repo/audio_processing/Real_time_audio__DMA/Core/Inc/stm32f4xx_hal_conf.h
+HeaderFiles#2=C:/mitsos/schematics/STM32_projects/GitHub_repos/public_repo/audio_processing/Real_time_audio__DMA/Core/Inc/main.h
 HeaderFolderListSize=1
-HeaderPath#0=C:/mitsos/schematics/STM32_projects/STM_CUBE_IDE_workstation/Real_time_audio__DMA/Core/Inc
+HeaderPath#0=C:/mitsos/schematics/STM32_projects/GitHub_repos/public_repo/audio_processing/Real_time_audio__DMA/Core/Inc
 HeaderFiles=;
 SourceFileListSize=3
-SourceFiles#0=C:/mitsos/schematics/STM32_projects/STM_CUBE_IDE_workstation/Real_time_audio__DMA/Core/Src/stm32f4xx_it.c
-SourceFiles#1=C:/mitsos/schematics/STM32_projects/STM_CUBE_IDE_workstation/Real_time_audio__DMA/Core/Src/stm32f4xx_hal_msp.c
-SourceFiles#2=C:/mitsos/schematics/STM32_projects/STM_CUBE_IDE_workstation/Real_time_audio__DMA/Core/Src/main.c
+SourceFiles#0=C:/mitsos/schematics/STM32_projects/GitHub_repos/public_repo/audio_processing/Real_time_audio__DMA/Core/Src/stm32f4xx_it.c
+SourceFiles#1=C:/mitsos/schematics/STM32_projects/GitHub_repos/public_repo/audio_processing/Real_time_audio__DMA/Core/Src/stm32f4xx_hal_msp.c
+SourceFiles#2=C:/mitsos/schematics/STM32_projects/GitHub_repos/public_repo/audio_processing/Real_time_audio__DMA/Core/Src/main.c
 SourceFolderListSize=1
-SourcePath#0=C:/mitsos/schematics/STM32_projects/STM_CUBE_IDE_workstation/Real_time_audio__DMA/Core/Src
+SourcePath#0=C:/mitsos/schematics/STM32_projects/GitHub_repos/public_repo/audio_processing/Real_time_audio__DMA/Core/Src
 SourceFiles=;
 
